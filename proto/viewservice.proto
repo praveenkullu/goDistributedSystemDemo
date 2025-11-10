@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "github.com/praveenkullu/dsdemo/proto";
+
+// View represents the current system configuration
+message View {
+  uint64 view_number = 1;  // Increments every time the view changes
+  string primary = 2;       // Address of the primary server
+  string backup = 3;        // Address of the backup server (can be empty)
+}
+
+// PingRequest is sent by KV servers to announce they are alive
+message PingRequest {
+  string server_name = 1;   // Name/address of the server sending ping
+  uint64 view_number = 2;   // The view number the server currently knows
+}
+
+// PingResponse returns the current view
+message PingResponse {
+  View view = 1;
+}
+
+// GetViewRequest is sent by clients to find the current primary
+message GetViewRequest {}
+
+// GetViewResponse returns the current view
+message GetViewResponse {
+  View view = 1;
+}
+
+// ViewService manages the system view and detects failures
+service ViewService {
+  // Ping is called by KV servers every 0.5 seconds to announce they are alive
+  rpc Ping(PingRequest) returns (PingResponse);
+
+  // GetView is called by clients to find the current primary
+  rpc GetView(GetViewRequest) returns (GetViewResponse);
+}

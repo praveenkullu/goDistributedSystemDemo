@@ -1,0 +1,113 @@
+ 
+Client · GO
+package main
+
+import (
+	"errors"
+	"fmt"
+	"time"
+)
+
+// Client represents a client that interacts with the KV store
+type Client struct {
+	viewService     *ViewService
+	currentPrimary  string
+	servers         map[string]*KVServer
+	maxRetries      int
+}
+
+// NewClient creates a new client
+func NewClient(viewService *ViewService, servers map[string]*KVServer) *Client {
+	return &Client{
+		viewService:    viewService,
+		currentPrimary: "",
+		servers:        servers,
+		maxRetries:     5,
+	}
+}
+
+// Get retrieves a value by key
+func (c *Client) Get(key string) (string, error) {
+	for retry := 0; retry < c.maxRetries; retry++ {
+		// Get current primary if we don't have one
+		if c.currentPrimary == "" {
+			view := c.viewService.GetView()
+			if view.Primary == "" {
+				time.Sleep(100 * time.Millisecond)
+				continue
+			}
+			c.currentPrimary = view.Primary
+		}
+
+		// Try to get from primary
+		server, exists := c.servers[c.currentPrimary]
+		if !exists {
+			c.currentPrimary = ""
+			continue
+		}
+
+		value, err := server.Get(key)
+		if err != nil {
+			// Primary might have changed
+			if err.Error() == "not primary" {
+				c.currentPrimary = ""
+				time.Sleep(100 * time.Millisecond)
+				continue
+			}
+			return "", err
+		}
+
+		return value, nil
+	}
+
+	return "", errors.New("failed to get value after retries")
+}
+
+// Put stores a key-value pair
+func (c *Client) Put(key, value string) error {
+	for retry := 0; retry < c.maxRetries; retry++ {
+		// Get current primary if we don't have one
+		if c.currentPrimary == "" {
+			view := c.viewService.GetView()
+			if view.Primary == "" {
+				time.Sleep(100 * time.Millisecond)
+				continue
+			}
+			c.currentPrimary = view.Primary
+		}
+
+		// Try to put to primary
+		server, exists := c.servers[c.currentPrimary]
+		if !exists {
+			c.currentPrimary = ""
+			continue
+		}
+
+		err := server.Put(key, value)
+		if err != nil {
+			// Primary might have changed
+			if err.Error() == "not primary" {
+				c.currentPrimary = ""
+				time.Sleep(100 * time.Millisecond)
+				continue
+			}
+			return err
+		}
+
+		return nil
+	}
+
+	return errors.New("failed to put value after retries")
+}
+
+// PrintStatus prints the current status
+func (c *Client) PrintStatus() {
+	view := c.viewService.GetView()
+	fmt.Printf("\n=== Client Status ===\n")
+	fmt.Printf("Current View: #%d\n", view.ViewNumber)
+	fmt.Printf("Primary: %s\n", view.Primary)
+	fmt.Printf("Backup: %s\n", view.Backup)
+	fmt.Printf("Known Primary: %s\n", c.currentPrimary)
+	fmt.Println("===================")
+}
+

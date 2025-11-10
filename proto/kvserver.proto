@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "github.com/praveenkullu/dsdemo/proto";
+
+// GetRequest is sent by clients to retrieve a value
+message GetRequest {
+  string key = 1;
+}
+
+// GetResponse returns the value for the key
+message GetResponse {
+  string value = 1;
+  bool ok = 2;           // True if key exists
+  string error = 3;      // Error message if any
+}
+
+// PutRequest is sent by clients to store a key-value pair
+message PutRequest {
+  string key = 1;
+  string value = 2;
+}
+
+// PutResponse confirms the put operation
+message PutResponse {
+  bool ok = 1;
+  string error = 2;      // Error message if any
+}
+
+// ForwardUpdateRequest is sent by Primary to Backup for replication
+message ForwardUpdateRequest {
+  string key = 1;
+  string value = 2;
+}
+
+// ForwardUpdateResponse confirms the update
+message ForwardUpdateResponse {
+  bool ok = 1;
+}
+
+// SyncStateRequest is sent by Primary to transfer entire state to new Backup
+message SyncStateRequest {
+  map<string, string> data = 1;  // The entire key-value map
+  uint64 view_number = 2;         // The view number of this state
+}
+
+// SyncStateResponse confirms the state transfer
+message SyncStateResponse {
+  bool ok = 1;
+}
+
+// KVServer service for key-value operations
+service KVServer {
+  // Get retrieves a value for a key (only handled by Primary)
+  rpc Get(GetRequest) returns (GetResponse);
+
+  // Put stores a key-value pair (only handled by Primary)
+  rpc Put(PutRequest) returns (PutResponse);
+
+  // ForwardUpdate is called by Primary to replicate updates to Backup
+  rpc ForwardUpdate(ForwardUpdateRequest) returns (ForwardUpdateResponse);
+
+  // SyncState is called by Primary to transfer entire state to new Backup
+  rpc SyncState(SyncStateRequest) returns (SyncStateResponse);
+}
