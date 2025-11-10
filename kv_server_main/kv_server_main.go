@@ -17,6 +17,8 @@ func main() {
 
 	fmt.Printf("Starting KV Server on %s\n", *serverAddr)
 	fmt.Printf("View Service at %s\n", *vsAddr)
+	pid := os.Getpid()
+	fmt.Printf("PID: %d\n", pid)
 
 	kv := kvserver.StartServer(*serverAddr, *vsAddr)
 

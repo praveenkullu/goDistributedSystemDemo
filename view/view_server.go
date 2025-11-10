@@ -15,6 +15,8 @@ func main() {
 	flag.Parse()
 
 	fmt.Printf("Starting View Service on %s\n", *address)
+	pid := os.Getpid()
+	fmt.Printf("PID: %d\n", pid)
 	vs := viewservice.StartServer(*address)
 
 	// Wait for interrupt signal
