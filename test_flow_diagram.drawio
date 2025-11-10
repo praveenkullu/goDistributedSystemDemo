@@ -1,451 +1,342 @@
-<mxfile host="app.diagrams.net" modified="2025-11-10T00:00:00.000Z" agent="Claude" version="24.0.0">
+<mxfile host="app.diagrams.net" agent="Claude" version="24.0.0">
   <diagram name="KV Service Test Flow" id="kv-test-flow">
-    <mxGraphModel dx="1434" dy="816" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1700" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="816" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="3200" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
 
         <!-- Start Node -->
-        <mxCell id="start" value="START" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="start" value="START" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;" parent="1" vertex="1">
           <mxGeometry x="450" y="40" width="200" height="60" as="geometry" />
         </mxCell>
 
         <!-- PHASE 1: Initial Setup -->
-        <mxCell id="phase1-label" value="PHASE 1: Initial Setup" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;align=center;" vertex="1" parent="1">
+        <mxCell id="phase1-label" value="PHASE 1: Initial Setup" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;align=center;" parent="1" vertex="1">
           <mxGeometry x="100" y="140" width="900" height="30" as="geometry" />
         </mxCell>
 
-        <mxCell id="step1" value="Step 1: Start View Service&#xa;(localhost:8000)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+        <mxCell id="step1" value="Step 1: Start View Service&#xa;(localhost:8000)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="450" y="190" width="200" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="step2" value="Step 2: Start KV Server S1&#xa;(localhost:8001)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+        <mxCell id="step2" value="Step 2: Start KV Server S1&#xa;(localhost:8001)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="450" y="280" width="200" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="step3" value="Step 3: Check View" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+        <mxCell id="step3" value="Step 3: Check View" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
           <mxGeometry x="450" y="370" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="check3" value="S1 is Primary?&#xa;No Backup?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+        <mxCell id="check3" value="S1 is Primary?&#xa;No Backup?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
           <mxGeometry x="490" y="450" width="120" height="100" as="geometry" />
         </mxCell>
 
-        <mxCell id="step4a" value="Step 4a: Client Put(&quot;a&quot;, &quot;1&quot;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+        <mxCell id="step4a" value="Step 4a: Client Put(&quot;a&quot;, &quot;1&quot;)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="450" y="590" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="step4b" value="Step 4b: Client Get(&quot;a&quot;)&#xa;Expected: &quot;1&quot;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+        <mxCell id="step4b" value="Step 4b: Client Get(&quot;a&quot;)&#xa;Expected: &quot;1&quot;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="450" y="670" width="200" height="50" as="geometry" />
         </mxCell>
 
         <!-- PHASE 2: Backup Setup -->
-        <mxCell id="phase2-label" value="PHASE 2: Backup Setup &amp; Replication" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;align=center;" vertex="1" parent="1">
+        <mxCell id="phase2-label" value="PHASE 2: Backup Setup &amp; Replication" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;align=center;" parent="1" vertex="1">
           <mxGeometry x="100" y="760" width="900" height="30" as="geometry" />
         </mxCell>
 
-        <mxCell id="step5" value="Step 5: Start KV Server S2&#xa;(localhost:8002)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+        <mxCell id="step5" value="Step 5: Start KV Server S2&#xa;(localhost:8002)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="450" y="810" width="200" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="step6" value="Step 6: Check View" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+        <mxCell id="step6" value="Step 6: Check View" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
           <mxGeometry x="450" y="900" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="check6" value="S1 Primary?&#xa;S2 Backup?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+        <mxCell id="check6" value="S1 Primary?&#xa;S2 Backup?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
           <mxGeometry x="490" y="980" width="120" height="100" as="geometry" />
         </mxCell>
 
-        <mxCell id="step7" value="Step 7: Client Put(&quot;b&quot;, &quot;2&quot;)&#xa;(Replicates to S2)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+        <mxCell id="step7" value="Step 7: Client Put(&quot;b&quot;, &quot;2&quot;)&#xa;(Replicates to S2)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="450" y="1110" width="200" height="60" as="geometry" />
         </mxCell>
 
         <!-- PHASE 3: Primary Failure Test -->
-        <mxCell id="phase3-label" value="PHASE 3: Primary Failure &amp; Recovery" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;align=center;" vertex="1" parent="1">
+        <mxCell id="phase3-label" value="PHASE 3: Primary Failure &amp; Recovery" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;align=center;" parent="1" vertex="1">
           <mxGeometry x="100" y="1210" width="900" height="30" as="geometry" />
         </mxCell>
 
-        <mxCell id="step8" value="Step 8: Kill S1 (Primary)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" vertex="1" parent="1">
+        <mxCell id="step8" value="Step 8: Kill S1 (Primary)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" parent="1" vertex="1">
           <mxGeometry x="450" y="1260" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="step9" value="Step 9: Wait 3 seconds&#xa;(Failure Detection)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+        <mxCell id="step9" value="Step 9: Wait 3 seconds&#xa;(Failure Detection)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
           <mxGeometry x="450" y="1340" width="200" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="step10" value="Step 10: Check View" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+        <mxCell id="step10" value="Step 10: Check View" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
           <mxGeometry x="450" y="1430" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="check10" value="S2 is Primary?&#xa;No Backup?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+        <mxCell id="check10" value="S2 is Primary?&#xa;No Backup?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
           <mxGeometry x="490" y="1510" width="120" height="100" as="geometry" />
         </mxCell>
 
-        <mxCell id="step11a" value="Step 11a: Client Get(&quot;a&quot;)&#xa;Expected: &quot;1&quot;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+        <mxCell id="step11a" value="Step 11a: Client Get(&quot;a&quot;)&#xa;Expected: &quot;1&quot;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="450" y="1640" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="step11b" value="Step 11b: Client Get(&quot;b&quot;)&#xa;Expected: &quot;2&quot;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+        <mxCell id="step11b" value="Step 11b: Client Get(&quot;b&quot;)&#xa;Expected: &quot;2&quot;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
           <mxGeometry x="450" y="1720" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <!-- Page break indicator -->
-        <mxCell id="pagebreak1" value="Continue on next page..." style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=2;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="450" y="1800" width="200" height="30" as="geometry" />
-        </mxCell>
-
         <!-- PHASE 4: State Transfer Test -->
-        <mxCell id="phase4-label" value="PHASE 4: State Transfer Test" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;align=center;" vertex="1" parent="1">
-          <mxGeometry x="100" y="1860" width="900" height="30" as="geometry" />
+        <mxCell id="phase4-label" value="PHASE 4: State Transfer Test" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="100" y="1810" width="900" height="30" as="geometry" />
         </mxCell>
 
-        <mxCell id="step12" value="Step 12: Start KV Server S3&#xa;(localhost:8003)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-          <mxGeometry x="450" y="1910" width="200" height="60" as="geometry" />
+        <mxCell id="step12" value="Step 12: Start KV Server S3&#xa;(localhost:8003)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="450" y="1860" width="200" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="step13" value="Step 13: Check View" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="450" y="2000" width="200" height="50" as="geometry" />
+        <mxCell id="step13" value="Step 13: Check View" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="450" y="1950" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="check13" value="S2 Primary?&#xa;S3 Backup?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="490" y="2080" width="120" height="100" as="geometry" />
+        <mxCell id="check13" value="S2 Primary?&#xa;S3 Backup?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="490" y="2030" width="120" height="100" as="geometry" />
         </mxCell>
 
-        <mxCell id="step14" value="Step 14: Wait for&#xa;State Transfer Complete" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-          <mxGeometry x="450" y="2210" width="200" height="60" as="geometry" />
+        <mxCell id="step14" value="Step 14: Wait for&#xa;State Transfer Complete" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="450" y="2160" width="200" height="60" as="geometry" />
         </mxCell>
 
         <!-- PHASE 5: Backup Promotion Test -->
-        <mxCell id="phase5-label" value="PHASE 5: Backup Promotion Test" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;align=center;" vertex="1" parent="1">
-          <mxGeometry x="100" y="2310" width="900" height="30" as="geometry" />
+        <mxCell id="phase5-label" value="PHASE 5: Backup Promotion Test" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="100" y="2260" width="900" height="30" as="geometry" />
         </mxCell>
 
-        <mxCell id="step15" value="Step 15: Kill S2 (Primary)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="450" y="2360" width="200" height="50" as="geometry" />
+        <mxCell id="step15" value="Step 15: Kill S2 (Primary)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;" parent="1" vertex="1">
+          <mxGeometry x="450" y="2310" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="step15b" value="Wait 3 seconds&#xa;(Failure Detection)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
-          <mxGeometry x="450" y="2440" width="200" height="60" as="geometry" />
+        <mxCell id="step15b" value="Wait 3 seconds&#xa;(Failure Detection)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+          <mxGeometry x="450" y="2390" width="200" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="step16" value="Step 16: Check View" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
-          <mxGeometry x="450" y="2530" width="200" height="50" as="geometry" />
+        <mxCell id="step16" value="Step 16: Check View" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="1" vertex="1">
+          <mxGeometry x="450" y="2480" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="check16" value="S3 is Primary?&#xa;No Backup?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
-          <mxGeometry x="490" y="2610" width="120" height="100" as="geometry" />
+        <mxCell id="check16" value="S3 is Primary?&#xa;No Backup?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" parent="1" vertex="1">
+          <mxGeometry x="490" y="2560" width="120" height="100" as="geometry" />
         </mxCell>
 
         <!-- PHASE 6: Final Verification -->
-        <mxCell id="phase6-label" value="PHASE 6: Final Data Verification" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;align=center;" vertex="1" parent="1">
-          <mxGeometry x="100" y="2740" width="900" height="30" as="geometry" />
+        <mxCell id="phase6-label" value="PHASE 6: Final Data Verification" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;align=center;" parent="1" vertex="1">
+          <mxGeometry x="100" y="2690" width="900" height="30" as="geometry" />
         </mxCell>
 
-        <mxCell id="step17a" value="Step 17a: Client Get(&quot;a&quot;)&#xa;Expected: &quot;1&quot;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="450" y="2790" width="200" height="50" as="geometry" />
+        <mxCell id="step17a" value="Step 17a: Client Get(&quot;a&quot;)&#xa;Expected: &quot;1&quot;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="450" y="2740" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="step17b" value="Step 17b: Client Get(&quot;b&quot;)&#xa;Expected: &quot;2&quot;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
-          <mxGeometry x="450" y="2870" width="200" height="50" as="geometry" />
+        <mxCell id="step17b" value="Step 17b: Client Get(&quot;b&quot;)&#xa;Expected: &quot;2&quot;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="450" y="2820" width="200" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="verify-final" value="All Data Intact&#xa;After 2 Failures?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
-          <mxGeometry x="490" y="2950" width="120" height="100" as="geometry" />
+        <mxCell id="verify-final" value="All Data Intact&#xa;After 2 Failures?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="490" y="2900" width="120" height="100" as="geometry" />
         </mxCell>
 
-        <!-- End Node -->
-        <mxCell id="end-success" value="ALL TESTS PASSED" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="450" y="3090" width="200" height="60" as="geometry" />
+        <!-- End Nodes -->
+        <mxCell id="end-success" value="ALL TESTS PASSED" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="450" y="3040" width="200" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="end-fail" value="TEST FAILED" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+        <mxCell id="end-fail" value="TEST FAILED" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=14;" parent="1" vertex="1">
           <mxGeometry x="750" y="1000" width="150" height="60" as="geometry" />
         </mxCell>
 
         <!-- Side annotations -->
-        <mxCell id="note1" value="Primary Assignment" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+        <mxCell id="note1" value="Primary Assignment" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;dashPattern=8 8;" parent="1" vertex="1">
           <mxGeometry x="730" y="370" width="120" height="50" as="geometry" />
         </mxCell>
 
-        <mxCell id="note2" value="Backup Assignment&#xa;&amp; Replication" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+        <mxCell id="note2" value="Backup Assignment&#xa;&amp; Replication" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;dashPattern=8 8;" parent="1" vertex="1">
           <mxGeometry x="730" y="900" width="120" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="note3" value="Backup Promotion&#xa;to Primary" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+        <mxCell id="note3" value="Backup Promotion&#xa;to Primary" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;dashPattern=8 8;" parent="1" vertex="1">
           <mxGeometry x="730" y="1430" width="120" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="note4" value="Full State Transfer&#xa;from S2 to S3" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
-          <mxGeometry x="730" y="2000" width="120" height="60" as="geometry" />
+        <mxCell id="note4" value="Full State Transfer&#xa;from S2 to S3" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;dashPattern=8 8;" parent="1" vertex="1">
+          <mxGeometry x="730" y="1950" width="120" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="note5" value="Second Promotion&#xa;S3 → Primary" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
-          <mxGeometry x="730" y="2530" width="120" height="60" as="geometry" />
+        <mxCell id="note5" value="Second Promotion&#xa;S3 → Primary" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;dashPattern=8 8;" parent="1" vertex="1">
+          <mxGeometry x="730" y="2480" width="120" height="60" as="geometry" />
         </mxCell>
 
-        <mxCell id="legend" value="LEGEND&#xa;&#xa;Yellow: Server Operations&#xa;Purple: View Checks&#xa;Pink: Client Operations&#xa;Orange: Decision Points&#xa;Green: Start/Success&#xa;Red: Failure/Kill" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;fontSize=10;" vertex="1" parent="1">
-          <mxGeometry x="100" y="140" width="150" height="180" as="geometry" />
+        <mxCell id="legend" value="LEGEND&#xa;&#xa;Yellow: Server Operations&#xa;Purple: View Checks&#xa;Pink: Client Operations&#xa;Orange: Decision Points&#xa;Green: Start/Success&#xa;Red: Failure/Kill" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;verticalAlign=top;fontSize=10;" parent="1" vertex="1">
+          <mxGeometry x="100" y="40" width="150" height="180" as="geometry" />
         </mxCell>
 
-        <!-- Arrows/Edges -->
-        <mxCell id="edge1" edge="1" parent="1" source="start" target="step1">
+        <!-- Edges -->
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="start" target="step1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge2" edge="1" parent="1" source="step1" target="step2">
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step1" target="step2" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge3" edge="1" parent="1" source="step2" target="step3">
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step2" target="step3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge4" edge="1" parent="1" source="step3" target="check3">
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step3" target="check3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge5" edge="1" parent="1" source="check3" target="step4a">
-          <mxGeometry relative="1" as="geometry" />
-          <mxLabel value="YES" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge5">
-            <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
-        </mxCell>
-
-        <mxCell id="edge5b" edge="1" parent="1" source="check3" target="end-fail">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="825" y="500" />
-            </Array>
-          </mxGeometry>
-          <mxLabel value="NO" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge5b">
-            <mxGeometry x="-0.8" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
-        </mxCell>
-
-        <mxCell id="edge6" edge="1" parent="1" source="step4a" target="step4b">
+        <mxCell id="edge5" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="check3" target="step4a" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge7" edge="1" parent="1" source="step4b" target="step5">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="550" y="760" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <mxCell id="edge8" edge="1" parent="1" source="step5" target="step6">
+        <mxCell id="edge5b" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="check3" target="end-fail" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge9" edge="1" parent="1" source="step6" target="check6">
+        <mxCell id="edge6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step4a" target="step4b" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge10" edge="1" parent="1" source="check6" target="step7">
-          <mxGeometry relative="1" as="geometry" />
-          <mxLabel value="YES" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge10">
-            <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
-        </mxCell>
-
-        <mxCell id="edge10b" edge="1" parent="1" source="check6" target="end-fail">
-          <mxGeometry relative="1" as="geometry" />
-          <mxLabel value="NO" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge10b">
-            <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
-        </mxCell>
-
-        <mxCell id="edge11" edge="1" parent="1" source="step7" target="step8">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="550" y="1210" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <mxCell id="edge12" edge="1" parent="1" source="step8" target="step9">
+        <mxCell id="edge7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step4b" target="step5" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge13" edge="1" parent="1" source="step9" target="step10">
+        <mxCell id="edge8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step5" target="step6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge14" edge="1" parent="1" source="step10" target="check10">
+        <mxCell id="edge9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step6" target="check6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge15" edge="1" parent="1" source="check10" target="step11a">
-          <mxGeometry relative="1" as="geometry" />
-          <mxLabel value="YES" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge15">
-            <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
-        </mxCell>
-
-        <mxCell id="edge15b" edge="1" parent="1" source="check10" target="end-fail">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="825" y="1560" />
-              <mxPoint x="825" y="1100" />
-            </Array>
-          </mxGeometry>
-          <mxLabel value="NO" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge15b">
-            <mxGeometry x="-0.8" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
-        </mxCell>
-
-        <mxCell id="edge16" edge="1" parent="1" source="step11a" target="step11b">
+        <mxCell id="edge10" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="check6" target="step7" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge17" edge="1" parent="1" source="step11b" target="step12">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="550" y="1860" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <mxCell id="edge18" edge="1" parent="1" source="step12" target="step13">
+        <mxCell id="edge10b" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="check6" target="end-fail" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge19" edge="1" parent="1" source="step13" target="check13">
+        <mxCell id="edge11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step7" target="step8" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge20" edge="1" parent="1" source="check13" target="step14">
-          <mxGeometry relative="1" as="geometry" />
-          <mxLabel value="YES" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge20">
-            <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
-        </mxCell>
-
-        <mxCell id="edge20b" edge="1" parent="1" source="check13" target="end-fail">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="825" y="2130" />
-              <mxPoint x="825" y="1100" />
-            </Array>
-          </mxGeometry>
-          <mxLabel value="NO" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge20b">
-            <mxGeometry x="-0.8" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
-        </mxCell>
-
-        <mxCell id="edge21" edge="1" parent="1" source="step14" target="step15">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="550" y="2310" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-
-        <mxCell id="edge22" edge="1" parent="1" source="step15" target="step15b">
+        <mxCell id="edge12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step8" target="step9" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge23" edge="1" parent="1" source="step15b" target="step16">
+        <mxCell id="edge13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step9" target="step10" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge24" edge="1" parent="1" source="step16" target="check16">
+        <mxCell id="edge14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step10" target="check10" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge25" edge="1" parent="1" source="check16" target="step17a">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="550" y="2740" />
-            </Array>
-          </mxGeometry>
-          <mxLabel value="YES" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge25">
-            <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
-        </mxCell>
-
-        <mxCell id="edge25b" edge="1" parent="1" source="check16" target="end-fail">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="825" y="2660" />
-              <mxPoint x="825" y="1100" />
-            </Array>
-          </mxGeometry>
-          <mxLabel value="NO" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge25b">
-            <mxGeometry x="-0.8" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
-        </mxCell>
-
-        <mxCell id="edge26" edge="1" parent="1" source="step17a" target="step17b">
+        <mxCell id="edge15" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="check10" target="step11a" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge27" edge="1" parent="1" source="step17b" target="verify-final">
+        <mxCell id="edge15b" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="check10" target="end-fail" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="edge28" edge="1" parent="1" source="verify-final" target="end-success">
+        <mxCell id="edge16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step11a" target="step11b" edge="1">
           <mxGeometry relative="1" as="geometry" />
-          <mxLabel value="YES" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge28">
-            <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
         </mxCell>
 
-        <mxCell id="edge28b" edge="1" parent="1" source="verify-final" target="end-fail">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="825" y="3000" />
-              <mxPoint x="825" y="1100" />
-            </Array>
-          </mxGeometry>
-          <mxLabel value="NO" style="edgeLabel;html=1;align=center;verticalAlign=middle;" vertex="1" connectable="0" parent="edge28b">
-            <mxGeometry x="-0.8" y="1" relative="1" as="geometry">
-              <mxPoint as="offset" />
-            </mxGeometry>
-          </mxLabel>
+        <mxCell id="edge17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step11b" target="step12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step12" target="step13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step13" target="check13" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge20" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="check13" target="step14" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge20b" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="check13" target="end-fail" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step14" target="step15" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step15" target="step15b" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step15b" target="step16" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step16" target="check16" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge25" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="check16" target="step17a" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge25b" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="check16" target="end-fail" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step17a" target="step17b" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="step17b" target="verify-final" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge28" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="verify-final" target="end-success" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge28b" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="verify-final" target="end-fail" edge="1">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
         <!-- Annotation arrows -->
-        <mxCell id="ann1" edge="1" parent="1" source="note1" target="step3" style="dashed=1;dashPattern=8 8;">
+        <mxCell id="ann1" style="dashed=1;dashPattern=8 8;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="note1" target="step3" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="ann2" edge="1" parent="1" source="note2" target="step6" style="dashed=1;dashPattern=8 8;">
+        <mxCell id="ann2" style="dashed=1;dashPattern=8 8;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="note2" target="step6" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="ann3" edge="1" parent="1" source="note3" target="step10" style="dashed=1;dashPattern=8 8;">
+        <mxCell id="ann3" style="dashed=1;dashPattern=8 8;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="note3" target="step10" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="ann4" edge="1" parent="1" source="note4" target="step13" style="dashed=1;dashPattern=8 8;">
+        <mxCell id="ann4" style="dashed=1;dashPattern=8 8;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="note4" target="step13" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
-        <mxCell id="ann5" edge="1" parent="1" source="note5" target="step16" style="dashed=1;dashPattern=8 8;">
+        <mxCell id="ann5" style="dashed=1;dashPattern=8 8;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="note5" target="step16" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
 
