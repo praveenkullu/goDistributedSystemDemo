@@ -32,7 +32,7 @@ type KVServer struct {
 
 	currentView  *pb.View
 	data         map[string]string
-	role         string           // "primary", "backup", or "idle"
+	role         string           // "primary", "backup", or "default"
 	lastBackup   string           // last known backup address
 	syncing      bool             // true when state transfer is in progress
 	pendingQueue []*pb.PutRequest // queue for puts during state transfer
@@ -44,7 +44,7 @@ func StartServer(serverName string, vsAddress string) *KVServer {
 		me:           serverName,
 		vsAddress:    vsAddress,
 		data:         make(map[string]string),
-		role:         "idle",
+		role:         "default",
 		lastBackup:   "",
 		syncing:      false,
 		pendingQueue: make([]*pb.PutRequest, 0),
@@ -76,6 +76,7 @@ func StartServer(serverName string, vsAddress string) *KVServer {
 	go kv.pingLoop()
 
 	log.Printf("KVServer %s started\n", serverName)
+	log.Printf("KVServer Configuration: PingInterval=%v\n", PingInterval)
 	return kv
 }
 
@@ -156,7 +157,7 @@ func (kv *KVServer) handleViewChange(oldView *pb.View) {
 	} else if kv.currentView.Backup == kv.me {
 		kv.role = "backup"
 	} else {
-		kv.role = "idle"
+		kv.role = "default"
 	}
 
 	if oldRole != kv.role {

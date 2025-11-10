@@ -16,7 +16,7 @@ type Client struct {
 	vsAddress      string
 	vsClient       pb.ViewServiceClient
 	vsConn         *grpc.ClientConn
-	currentPrimary string
+	CurrentPrimary string
 	primaryClient  pb.KVServerClient
 	primaryConn    *grpc.ClientConn
 }
@@ -25,7 +25,7 @@ type Client struct {
 func MakeClient(vsAddress string) *Client {
 	ck := &Client{
 		vsAddress:      vsAddress,
-		currentPrimary: "",
+		CurrentPrimary: "",
 	}
 
 	// Connect to view service
@@ -50,9 +50,9 @@ func (ck *Client) Get(key string) string {
 
 	for {
 		// Get current primary
-		if ck.currentPrimary == "" {
-			ck.updatePrimary()
-			if ck.currentPrimary == "" {
+		if ck.CurrentPrimary == "" {
+			ck.UpdatePrimary()
+			if ck.CurrentPrimary == "" {
 				time.Sleep(500 * time.Millisecond)
 				continue
 			}
@@ -70,7 +70,7 @@ func (ck *Client) Get(key string) string {
 		} else if err != nil || resp.Error == "ErrNotPrimary" {
 			// Primary changed or failed, update and retry
 			log.Printf("Get failed, updating primary and retrying...\n")
-			ck.currentPrimary = ""
+			ck.CurrentPrimary = ""
 			if ck.primaryConn != nil {
 				ck.primaryConn.Close()
 				ck.primaryConn = nil
@@ -87,9 +87,9 @@ func (ck *Client) Put(key string, value string) {
 
 	for {
 		// Get current primary
-		if ck.currentPrimary == "" {
-			ck.updatePrimary()
-			if ck.currentPrimary == "" {
+		if ck.CurrentPrimary == "" {
+			ck.UpdatePrimary()
+			if ck.CurrentPrimary == "" {
 				time.Sleep(500 * time.Millisecond)
 				continue
 			}
@@ -105,7 +105,7 @@ func (ck *Client) Put(key string, value string) {
 		} else if err != nil || resp.Error == "ErrNotPrimary" {
 			// Primary changed or failed, update and retry
 			log.Printf("Put failed, updating primary and retrying...\n")
-			ck.currentPrimary = ""
+			ck.CurrentPrimary = ""
 			if ck.primaryConn != nil {
 				ck.primaryConn.Close()
 				ck.primaryConn = nil
@@ -116,8 +116,8 @@ func (ck *Client) Put(key string, value string) {
 	}
 }
 
-// updatePrimary queries the view service for the current primary
-func (ck *Client) updatePrimary() {
+// UpdatePrimary queries the view service for the current primary
+func (ck *Client) UpdatePrimary() {
 	req := &pb.GetViewRequest{}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -129,22 +129,22 @@ func (ck *Client) updatePrimary() {
 		return
 	}
 
-	if resp.View.Primary != "" && resp.View.Primary != ck.currentPrimary {
-		ck.currentPrimary = resp.View.Primary
+	if resp.View.Primary != "" && resp.View.Primary != ck.CurrentPrimary {
+		ck.CurrentPrimary = resp.View.Primary
 		if ck.primaryConn != nil {
 			ck.primaryConn.Close()
 		}
 
 		// Connect to new primary
-		conn, err := grpc.Dial(ck.currentPrimary, grpc.WithTransportCredentials(insecure.NewCredentials()))
+		conn, err := grpc.Dial(ck.CurrentPrimary, grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
-			log.Printf("Failed to connect to primary %s: %v\n", ck.currentPrimary, err)
-			ck.currentPrimary = ""
+			log.Printf("Failed to connect to primary %s: %v\n", ck.CurrentPrimary, err)
+			ck.CurrentPrimary = ""
 			return
 		}
 		ck.primaryConn = conn
 		ck.primaryClient = pb.NewKVServerClient(conn)
-		log.Printf("Client connected to primary %s\n", ck.currentPrimary)
+		log.Printf("Client connected to primary %s\n", ck.CurrentPrimary)
 	}
 }
 

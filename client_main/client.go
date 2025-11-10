@@ -17,7 +17,7 @@
  */
 
 // Package main implements a client for Greeter service.
-package client_main
+package main
 
 import (
 	"flag"
@@ -29,7 +29,7 @@ import (
 
 func main() {
 	vsAddr := flag.String("vs", "localhost:8000", "View service address (host:port)")
-	clientOp := flag.String("op", "get", "Client operation: get or put")
+	clientOp := flag.String("op", "put", "Client operation: get or put")
 	key := flag.String("key", "foo", "Key for get/put operation")
 	value := flag.String("value", "bar", "Value for put operation")
 
@@ -44,15 +44,15 @@ func main() {
 	//retry 5 times to connect to primary
 	i := 0
 	for next := true; next; next = i < 5 {
-		ck.updatePrimary()
-		if ck.currentPrimary != "" {
+		ck.UpdatePrimary()
+		if ck.CurrentPrimary != "" {
 			break
 		}
 		time.Sleep(1 * time.Second)
 		i++
 	}
 
-	fmt.Printf("Connected to primary server at %s\n", ck.currentPrimary)
+	fmt.Printf("Connected to primary server at %s\n", ck.CurrentPrimary)
 
 	if *clientOp == "get" {
 		val := ck.Get(*key)
@@ -64,4 +64,6 @@ func main() {
 		fmt.Printf("Unknown client operation: %s\n", *clientOp)
 	}
 
+	// wait indefinitely
+	select {}
 }

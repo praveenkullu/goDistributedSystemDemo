@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	PingInterval   = 500 * time.Millisecond  // Servers ping every 0.5 seconds
+	// PingInterval   = 500 * time.Millisecond  // Servers ping every 0.5 seconds
 	DeadInterval   = 1500 * time.Millisecond // Servers are declared dead after 1.5 seconds
 	TickerInterval = 500 * time.Millisecond  // Ticker runs every 0.5 seconds
 )
@@ -74,6 +74,7 @@ func StartServer(address string) *ViewServer {
 	go vs.ticker()
 
 	log.Printf("ViewServer started on %s\n", address)
+	log.Printf("Server Configuration: DeadInterval=%v, TickerInterval=%v\n", DeadInterval, TickerInterval)
 	return vs
 }
 
@@ -93,7 +94,7 @@ func (vs *ViewServer) Ping(ctx context.Context, req *pb.PingRequest) (*pb.PingRe
 			LastPingTime: time.Now(),
 			Alive:        true,
 		}
-		// Add to idle servers if not already primary or backup
+		// Add to default servers if not already primary or backup
 		if req.ServerName != vs.currentView.Primary && req.ServerName != vs.currentView.Backup {
 			vs.idleServers = append(vs.idleServers, req.ServerName)
 		}
@@ -216,7 +217,7 @@ func (vs *ViewServer) checkFailuresAndPromote() {
 	}
 }
 
-// removeFromIdle removes a server from the idle list
+// removeFromIdle removes a server from the default list
 func (vs *ViewServer) removeFromIdle(serverName string) {
 	newIdle := make([]string, 0)
 	for _, name := range vs.idleServers {
