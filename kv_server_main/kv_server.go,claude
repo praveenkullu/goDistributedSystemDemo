@@ -1,0 +1,269 @@
+package main
+
+import (
+	"errors"
+	"fmt"
+	"sync"
+	"time"
+)
+
+// KVServer represents a key-value server (can be primary or backup)
+type KVServer struct {
+	mu              sync.Mutex
+	name            string
+	data            map[string]string
+	currentView     View
+	viewServiceAddr string
+	viewService     *ViewService
+	isPrimary       bool
+	isBackup        bool
+	stateSynced     bool
+	updateQueue     []PutOperation
+	processingQueue bool
+}
+
+// PutOperation represents a queued put operation
+type PutOperation struct {
+	Key   string
+	Value string
+	Done  chan error
+}
+
+// NewKVServer creates a new KV server
+func NewKVServer(name string, viewService *ViewService) *KVServer {
+	return &KVServer{
+		name:        name,
+		data:        make(map[string]string),
+		viewService: viewService,
+		currentView: View{ViewNumber: 0, Primary: "", Backup: ""},
+		updateQueue: make([]PutOperation, 0),
+	}
+}
+
+// Get retrieves a value by key
+func (kv *KVServer) Get(key string) (string, error) {
+	kv.mu.Lock()
+	defer kv.mu.Unlock()
+
+	if !kv.isPrimary {
+		return "", errors.New("not primary")
+	}
+
+	value, exists := kv.data[key]
+	if !exists {
+		return "", errors.New("key not found")
+	}
+
+	return value, nil
+}
+
+// Put stores a key-value pair
+func (kv *KVServer) Put(key, value string) error {
+	kv.mu.Lock()
+	
+	if !kv.isPrimary {
+		kv.mu.Unlock()
+		return errors.New("not primary")
+	}
+
+	// If we're transferring state, queue this operation
+	if !kv.stateSynced && kv.currentView.Backup != "" {
+		done := make(chan error, 1)
+		kv.updateQueue = append(kv.updateQueue, PutOperation{
+			Key:   key,
+			Value: value,
+			Done:  done,
+		})
+		kv.mu.Unlock()
+		return <-done
+	}
+
+	kv.mu.Unlock()
+	return kv.executePut(key, value)
+}
+
+// executePut performs the actual put operation
+func (kv *KVServer) executePut(key, value string) error {
+	kv.mu.Lock()
+	backup := kv.currentView.Backup
+	kv.mu.Unlock()
+
+	// If there's a backup, forward the update
+	if backup != "" {
+		// In a real implementation, this would be an RPC call
+		// For this demo, we'll simulate it with direct method call
+		if err := kv.forwardToBackup(backup, key, value); err != nil {
+			return fmt.Errorf("failed to replicate to backup: %v", err)
+		}
+	}
+
+	// Update local data
+	kv.mu.Lock()
+	kv.data[key] = value
+	kv.mu.Unlock()
+
+	return nil
+}
+
+// forwardToBackup forwards an update to the backup server
+func (kv *KVServer) forwardToBackup(backupName, key, value string) error {
+	// In a real system, this would be a gRPC call to the backup server
+	// For this demo, we'll use a global registry to find the backup
+	// This is a simplification for demonstration purposes
+	if backupServer := serverRegistry[backupName]; backupServer != nil {
+		return backupServer.ForwardUpdate(key, value)
+	}
+	return fmt.Errorf("backup server not found")
+}
+
+// Global server registry for demo purposes
+var serverRegistry = make(map[string]*KVServer)
+
+// ForwardUpdate handles update forwarded from primary (when this server is backup)
+func (kv *KVServer) ForwardUpdate(key, value string) error {
+	kv.mu.Lock()
+	defer kv.mu.Unlock()
+
+	if !kv.isBackup {
+		return errors.New("not backup")
+	}
+
+	kv.data[key] = value
+	return nil
+}
+
+// SyncState receives full state from primary
+func (kv *KVServer) SyncState(data map[string]string) error {
+	kv.mu.Lock()
+	defer kv.mu.Unlock()
+
+	if !kv.isBackup {
+		return errors.New("not backup")
+	}
+
+	// Replace entire state
+	kv.data = make(map[string]string)
+	for k, v := range data {
+		kv.data[k] = v
+	}
+
+	return nil
+}
+
+// transferStateToBackup transfers complete state to new backup
+func (kv *KVServer) transferStateToBackup(backupName string) error {
+	kv.mu.Lock()
+	// Copy data
+	dataCopy := make(map[string]string)
+	for k, v := range kv.data {
+		dataCopy[k] = v
+	}
+	kv.mu.Unlock()
+
+	// Find backup server and sync state
+	fmt.Printf("[%s] Transferring %d keys to backup %s\n", kv.name, len(dataCopy), backupName)
+	
+	if backupServer := serverRegistry[backupName]; backupServer != nil {
+		return backupServer.SyncState(dataCopy)
+	}
+	
+	return fmt.Errorf("backup server not found")
+}
+
+// processQueuedOperations processes operations that were queued during state transfer
+func (kv *KVServer) processQueuedOperations() {
+	kv.mu.Lock()
+	if kv.processingQueue {
+		kv.mu.Unlock()
+		return
+	}
+	kv.processingQueue = true
+	queue := kv.updateQueue
+	kv.updateQueue = make([]PutOperation, 0)
+	kv.mu.Unlock()
+
+	for _, op := range queue {
+		err := kv.executePut(op.Key, op.Value)
+		op.Done <- err
+	}
+
+	kv.mu.Lock()
+	kv.processingQueue = false
+	kv.mu.Unlock()
+}
+
+// updateRole updates the server's role based on the view
+func (kv *KVServer) updateRole(newView View) {
+	kv.mu.Lock()
+	defer kv.mu.Unlock()
+
+	oldView := kv.currentView
+	kv.currentView = newView
+
+	wasPrimary := kv.isPrimary
+	wasBackup := kv.isBackup
+
+	kv.isPrimary = (newView.Primary == kv.name)
+	kv.isBackup = (newView.Backup == kv.name)
+
+	// Role changed
+	if kv.isPrimary != wasPrimary || kv.isBackup != wasBackup {
+		fmt.Printf("[%s] Role changed - Primary: %v, Backup: %v (View #%d)\n", 
+			kv.name, kv.isPrimary, kv.isBackup, newView.ViewNumber)
+	}
+
+	// New backup detected - need state transfer
+	if kv.isPrimary && newView.Backup != "" && oldView.Backup != newView.Backup {
+		fmt.Printf("[%s] New backup detected: %s, initiating state transfer\n", kv.name, newView.Backup)
+		kv.stateSynced = false
+		go func() {
+			kv.transferStateToBackup(newView.Backup)
+			kv.mu.Lock()
+			kv.stateSynced = true
+			kv.mu.Unlock()
+			kv.processQueuedOperations()
+		}()
+	}
+
+	// No backup anymore
+	if kv.isPrimary && newView.Backup == "" && oldView.Backup != "" {
+		kv.stateSynced = true
+	}
+
+	// Became primary with no backup
+	if kv.isPrimary && newView.Backup == "" {
+		kv.stateSynced = true
+	}
+}
+
+// Start runs the server's heartbeat loop
+func (kv *KVServer) Start(pingInterval time.Duration) {
+	ticker := time.NewTicker(pingInterval)
+	go func() {
+		for range ticker.C {
+			// Ping the view service
+			newView := kv.viewService.Ping(kv.name)
+			
+			// Check if view changed
+			kv.mu.Lock()
+			viewChanged := (newView.ViewNumber != kv.currentView.ViewNumber)
+			kv.mu.Unlock()
+
+			if viewChanged {
+				kv.updateRole(newView)
+			}
+		}
+	}()
+}
+
+// GetData returns a copy of the server's data (for testing/debugging)
+func (kv *KVServer) GetData() map[string]string {
+	kv.mu.Lock()
+	defer kv.mu.Unlock()
+	
+	dataCopy := make(map[string]string)
+	for k, v := range kv.data {
+		dataCopy[k] = v
+	}
+	return dataCopy
+}

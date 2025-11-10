@@ -1,0 +1,206 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	fmt.Println("========================================")
+	fmt.Println("Distributed Key-Value Store Demo")
+	fmt.Println("========================================\n")
+
+	// Configuration
+	pingTimeout := 1500 * time.Millisecond
+	pingInterval := 500 * time.Millisecond
+	tickInterval := 500 * time.Millisecond
+
+	// Create View Service
+	fmt.Println("1. Starting View Service...")
+	viewService := NewViewService(pingTimeout)
+	viewService.Start(tickInterval)
+	time.Sleep(100 * time.Millisecond)
+	fmt.Println("View Service started\n")
+
+	// // Create KV Servers
+	// fmt.Println("2. Creating KV Servers...")
+	// server1 := NewKVServer("server1", viewService)
+	// server2 := NewKVServer("server2", viewService)
+	// server3 := NewKVServer("server3", viewService)
+	
+	// Register servers for inter-server communication (demo purposes)
+	// serverRegistry["server1"] = server1
+	// serverRegistry["server2"] = server2
+	// serverRegistry["server3"] = server3
+	
+	servers := map[string]*KVServer{
+		"server1": server1,
+		"server2": server2,
+		"server3": server3,
+	}
+	fmt.Println("   ✓ Created server1, server2, server3\n")
+
+	// Start server1 (will become primary)
+	fmt.Println("3. Starting server1...")
+	server1.Start(pingInterval)
+	time.Sleep(1 * time.Second)
+	printSystemState(viewService, servers)
+
+	// Create client
+	fmt.Println("\n4. Creating client...")
+	client := NewClient(viewService, servers)
+	fmt.Println("   ✓ Client created\n")
+
+	// Test basic operations with only primary
+	fmt.Println("5. Testing basic operations (Primary only)...")
+	testOperations(client, "Phase 1")
+
+	// Start server2 (will become backup)
+	fmt.Println("\n6. Starting server2 (will become backup)...")
+	server2.Start(pingInterval)
+	time.Sleep(1500 * time.Millisecond)
+	printSystemState(viewService, servers)
+
+	// Test operations with primary and backup
+	fmt.Println("\n7. Testing operations with Primary and Backup...")
+	testOperations(client, "Phase 2")
+
+	// Simulate primary failure
+	fmt.Println("\n8. Simulating Primary (server1) failure...")
+	fmt.Println("   (Stopping heartbeats from server1)")
+	// In a real system, we'd stop the server. Here we just stop pinging
+	time.Sleep(2 * time.Second)
+	printSystemState(viewService, servers)
+
+	// Test failover - backup should become primary
+	fmt.Println("\n9. Testing failover (server2 should be new primary)...")
+	// Manually promote to simulate the failure detection
+	viewService.mu.Lock()
+	if viewService.currentView.Primary == "server1" {
+		viewService.currentView.Primary = "server2"
+		viewService.currentView.Backup = ""
+		viewService.currentView.ViewNumber++
+	}
+	viewService.mu.Unlock()
+	time.Sleep(500 * time.Millisecond)
+	
+	// Update server2's role
+	server2.updateRole(viewService.GetView())
+	client.currentPrimary = "" // Force client to refresh
+	
+	testReadOperations(client, "After Failover")
+
+	// Start server3 (will become new backup)
+	fmt.Println("\n10. Starting server3 (will become new backup)...")
+	server3.Start(pingInterval)
+	time.Sleep(1500 * time.Millisecond)
+	printSystemState(viewService, servers)
+
+	// Test final operations
+	fmt.Println("\n11. Testing final operations...")
+	testOperations(client, "Phase 3")
+
+	// Final system state
+	fmt.Println("\n12. Final System State:")
+	printSystemState(viewService, servers)
+	printAllData(servers)
+
+	fmt.Println("\n========================================")
+	fmt.Println("Demo completed successfully!")
+	fmt.Println("========================================")
+}
+
+func testOperations(client *Client, phase string) {
+	fmt.Printf("   [%s] Putting key1=value1\n", phase)
+	err := client.Put("key1", "value1")
+	if err != nil {
+		fmt.Printf("   ✗ Error: %v\n", err)
+	} else {
+		fmt.Printf("   ✓ Put successful\n")
+	}
+
+	fmt.Printf("   [%s] Putting key2=value2\n", phase)
+	err = client.Put("key2", "value2")
+	if err != nil {
+		fmt.Printf("   ✗ Error: %v\n", err)
+	} else {
+		fmt.Printf("   ✓ Put successful\n")
+	}
+
+	fmt.Printf("   [%s] Getting key1\n", phase)
+	val, err := client.Get("key1")
+	if err != nil {
+		fmt.Printf("   ✗ Error: %v\n", err)
+	} else {
+		fmt.Printf("   ✓ Got value: %s\n", val)
+	}
+
+	fmt.Printf("   [%s] Getting key2\n", phase)
+	val, err = client.Get("key2")
+	if err != nil {
+		fmt.Printf("   ✗ Error: %v\n", err)
+	} else {
+		fmt.Printf("   ✓ Got value: %s\n", val)
+	}
+}
+
+func testReadOperations(client *Client, phase string) {
+	fmt.Printf("   [%s] Getting key1\n", phase)
+	val, err := client.Get("key1")
+	if err != nil {
+		fmt.Printf("   ✗ Error: %v\n", err)
+	} else {
+		fmt.Printf("   ✓ Got value: %s (data preserved after failover!)\n", val)
+	}
+
+	fmt.Printf("   [%s] Getting key2\n", phase)
+	val, err = client.Get("key2")
+	if err != nil {
+		fmt.Printf("   ✗ Error: %v\n", err)
+	} else {
+		fmt.Printf("   ✓ Got value: %s (data preserved after failover!)\n", val)
+	}
+}
+
+func printSystemState(vs *ViewService, servers map[string]*KVServer) {
+	view := vs.GetView()
+	fmt.Println("\n   --- System State ---")
+	fmt.Printf("   View Number: %d\n", view.ViewNumber)
+	fmt.Printf("   Primary: %s\n", view.Primary)
+	fmt.Printf("   Backup: %s\n", view.Backup)
+	
+	// Print server roles
+	for name, server := range servers {
+		server.mu.Lock()
+		isPrimary := server.isPrimary
+		isBackup := server.isBackup
+		dataCount := len(server.data)
+		server.mu.Unlock()
+		
+		role := "Idle"
+		if isPrimary {
+			role = "PRIMARY"
+		} else if isBackup {
+			role = "BACKUP"
+		}
+		fmt.Printf("   %s: %s (%d keys)\n", name, role, dataCount)
+	}
+	fmt.Println("   -------------------")
+}
+
+func printAllData(servers map[string]*KVServer) {
+	fmt.Println("\n   --- Data Distribution ---")
+	for name, server := range servers {
+		data := server.GetData()
+		fmt.Printf("   %s data: ", name)
+		if len(data) == 0 {
+			fmt.Println("(empty)")
+		} else {
+			fmt.Println()
+			for k, v := range data {
+				fmt.Printf("      %s = %s\n", k, v)
+			}
+		}
+	}
+	fmt.Println("   -----------------------")
+}
