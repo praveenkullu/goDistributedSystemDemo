@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+package paxos;
+
+option go_package = "multipaxos_kvstore/proto";
+
+// BallotNumber represents (Term Number, Server ID)
+message BallotNumber {
+    int32 term_number = 1;
+    int32 server_id = 2;
+}
+
+// LogEntry represents an atomic command for the state machine
+message LogEntry {
+    int32 index = 1;
+    BallotNumber ballot_num = 2;
+    string op_type = 3;  // "Put", "Delete", "Get", "No-Op"
+    string key = 4;
+    string value = 5;
+}
+
+// Phase 1: Prepare RPC
+message PrepareRequest {
+    BallotNumber ballot = 1;  // Nnew from the Candidate
+}
+
+message PrepareResponse {
+    bool promise = 1;  // true if Acceptor promises
+    BallotNumber ballot = 2;  // Echo back the ballot number
+    repeated LogEntry accepted_entries = 3;  // Previously accepted log entries for safety reconciliation
+}
+
+// Phase 2: Accept RPC
+message AcceptRequest {
+    BallotNumber ballot = 1;
+    LogEntry entry = 2;
+}
+
+message AcceptResponse {
+    bool accepted = 1;  // true if Acceptor accepted
+    int32 index = 2;  // Index of the log entry
+    BallotNumber ballot = 3;  // Echo back the ballot number
+}
+
+// Client operations
+message ClientPutRequest {
+    string key = 1;
+    string value = 2;
+}
+
+message ClientGetRequest {
+    string key = 1;
+}
+
+message ClientDeleteRequest {
+    string key = 1;
+}
+
+message ClientResponse {
+    bool success = 1;
+    string value = 2;  // For Get operations
+    string message = 3;  // Error message or status
+}
+
+// Heartbeat for leader liveness
+message HeartbeatRequest {
+    BallotNumber leader_ballot = 1;
+    int32 commit_index = 2;
+}
+
+message HeartbeatResponse {
+    bool success = 1;
+    int32 LastLogEntryIndex = 2;
+}
+
+//message for state transfer
+message StateTransfer {
+    repeated LogEntry missing_entries = 1;
+}
+
+message StateTransferResult {
+    bool success = 1;
+}
+
+// Service definition
+service PaxosService {
+    // Phase 1: Leader Election
+    rpc Prepare(PrepareRequest) returns (PrepareResponse);
+    // Phase 2: Log Replication
+    rpc Accept(AcceptRequest) returns (AcceptResponse);
+    // Leader heartbeats
+    rpc Heartbeat(HeartbeatRequest) returns (HeartbeatResponse);
+    rpc TransferState(StateTransfer) returns (StateTransferResult);
+}
+
+// Client service
+service ClientService {
+    rpc Put(ClientPutRequest) returns (ClientResponse);
+    rpc Get(ClientGetRequest) returns (ClientResponse);
+    rpc Delete(ClientDeleteRequest) returns (ClientResponse);
+}
